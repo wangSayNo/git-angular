@@ -1,0 +1,30 @@
+<h2 class="page-header">1.AngularJS 表达式语法</h2>
+<p> AngularJS 表达式写在双大括号内：<code>{{</code> expression <code>}}</code></p>
+
+<h2 class="page-header">2.表达式作用</h2>
+<p> AngularJS 表达式把数据绑定到 HTML，使用指令ng-bind可以把一个值绑定到HTML中。</p>
+<p> AngularJS 将在表达式书写的位置"输出"数据。</p>
+
+<h2 class="page-header">3.表达式特点</h2>
+<h4 class="text-info">表达式和 eval(javascript) 非常相似，但是由于表达式由AngularJS来处理，它们有以下显著不同的特性：</h4> 
+<p> AngularJS 表达式和 JavaScript 表达式类似：它们都可以包含文字、运算符和变量。</p>
+<p> 所有的表达式都在其所属的作用域内部执行，并有访问本地$scope的权限；</p>
+<p> 如果表达式发生了TypeError和ReferenceError并不会抛出异常；</p>
+<p> 不允许使用任何流程控制功能（条件控制，例如if/eles， while， switch ，do - while ，for）；</p>
+<p> 可是使用三目运算符； <code>{{</code> state?"is true":"is false" <code>}}</code></p>
+<p> 可以接受过滤器和过滤器链。 </p>
+<pre>
+Current Time: <code>{{</code> time|date:"yyyy-MM-dd HH:mm:ss" <code>}}</code>
+<code>{{ </code>"Current Time: "+(clock|date:"yyyy-MM-dd HH:mm:ss")|uppercase <code>}}</code>
+</pre>	
+<h2 class="page-header">4.自定义表达式符号 </h2>
+<a href="http://www.tuicool.com/articles/BjAzMvZ">拓展文章</a>
+<pre>
+var app = angular.module('myApp', []);
+
+app.config(function($interpolateProvider) {
+    $interpolateProvider.startSymbol('&lt;%');
+    $interpolateProvider.endSymbol('%&gt;');
+});
+</pre>
+<p class="text-danger">注意：内置服务一定不要少了前置的'$'符号。</p>

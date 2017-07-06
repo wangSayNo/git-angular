@@ -1,0 +1,403 @@
+<h2 class="page-header">1.服务的作用</h2>
+<ul>
+	<li>服务是一个单例对象，在每个应用中只会被实例化一次（被$injector实例化），并且是延迟加载的（需要时才会被创建）。</li>
+	<li>服务提供了一种能在应用的整个生命周期内保持数据的方法，它能够在控制器之间进行通信，并且能保证数据的一致性。</li>
+</ul>
+
+<h2 class="page-header">2.服务注入原则</h2>
+<b class="text-danger">先注入内置服务，再注入自定义服务。</b>
+
+<h2 class="page-header">3.常用内置服务介绍</h2>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead class="bg-primary">
+			<tr>
+				<th class="text-center">#</th>
+				<th class="text-center">服务名称</th>
+				<th class="text-center">描述</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="text-center">1</td>
+				<td class="text-center">$http</td>
+				<td>服务向服务器发送请求，应用响应服务器传送过来的数据。<a href="http://www.2cto.com/kf/201506/405137.html">$http用法</a></td>
+			</tr>
+			<tr>
+				<td class="text-center">2</td>
+				<td class="text-center">$timeout</td>
+				<td>超时定时器，用法同js原生的setTimeout一致</td>
+			</tr>
+			<tr>
+				<td class="text-center">3</td>
+				<td class="text-center">$interval </td>
+				<td>周期性定时器，用法同js原生的setInterval一致</td>
+			</tr>
+			<tr>
+				<td class="text-center">4</td>
+				<td class="text-center">$location</td>
+				<td>操作当前的地址栏，主要在路由中使用</td>
+			</tr>
+			<tr>
+				<td class="text-center">……</td>
+				<td class="text-center">……</td>
+				<td>……</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<caption>$location 服务</caption>
+		<tbody>
+			<tr>
+				<td class="text-right">absUrl( )</td>
+				<td>只读；根据在RFC 3986中指定的规则，返回url，带有所有的片段。</td>
+			</tr>
+			<tr>
+				<td class="text-right">hash( )</td>
+				<td>读、写；当带有参数时，返回哈希碎片；当在带有参数的情况下，改变哈希碎片时，返回$location。</td>
+			</tr>
+			<tr>
+				<td class="text-right">host( )</td>
+				<td>只读；返回url中的主机路径。</td>
+			</tr>
+			<tr>
+				<td class="text-right">path( )</td>
+				<td>读、写；当没有任何参数时，返回当前url的路径；当带有参数时，改变路径，并返回$location。（返回的路径永远会带有/）</td>
+			</tr>
+			<tr>
+				<td class="text-right">port( )</td>
+				<td>只读；返回当前路径的端口号。</td>
+			</tr>
+			<tr>
+				<td class="text-right">protocol( )</td>
+				<td>只读；返回当前url的协议。</td>
+			</tr>
+			<tr>
+				<td class="text-right">replace( )</td>
+				<td>如果被调用，就会用改变后的URL直接替换浏览器中的历史记录，而不是在历史记录中新建一条信息，这样可以阻止『后退』。</td>
+			</tr>
+			<tr>
+				<td class="text-right">search( )</td>
+				<td>读、写；当不带参数调用的时候，以对象形式返回当前url的搜索部分。</td>
+			</tr>
+			<tr>
+				<td class="text-right">url( )</td>
+				<td>读、写；当不带参数时，返回url；当带有参数时，返回$location。</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<h2 class="page-header">4.自定义服务</h2>
+<small>共有5种创建服务的方式；</small>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead class="bg-primary">
+			<tr>
+				<th class="text-center">#</th>
+				<th class="text-center">函数名称</th>
+				<th class="text-center">主要特点</th>
+				<th class="text-center col-xs-4">参数描述</th>
+				<th class="text-center">注意事项</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td>constant(name, value)</td>
+				<td>
+					<ol>
+						<li>以将一个已经存在的变量值注册为服务，并将其注入到应用的其他部分当中；</li>
+						<li class="text-danger">这个常量不能被装饰器拦截。</li>
+					</ol>
+					
+				</td>
+				<td>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>参数名</th>
+								<th>数据类型</th>
+								<th>解释</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>name</td>
+								<td>string</td>
+								<td>服务名称</td>
+							</tr>
+							<tr>
+								<td>value</td>
+								<td>基本类型值或对象</td>
+								<td>需要注册的常量的值（值或者对象）</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td>
+					<ul>
+						<li>如果第二个参数是一个函数，那么这个服务就是一个函数；</li>
+						<li>该方式创建的服务，在使用config进行配置的时候，不需要在服务名称后加 Provider 进行配置,并且他是直接配置服务中的属性；</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>value(name, value)</td>
+				<td>
+					<ol>
+						<li>如果服务的$get方法返回的是一个常量，那就没要必要定义一个包含复杂功能的完整服务，可以通过value()函数方便地注册服务。</li>
+					</ol>
+					
+				</td>
+				<td>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>参数名</th>
+								<th>数据类型</th>
+								<th>解释</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>name</td>
+								<td>string</td>
+								<td>服务名称</td>
+							</tr>
+							<tr>
+								<td>value</td>
+								<td>基本类型值或对象</td>
+								<td>需要注册的常量的值（值类型或者对象）</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>factory(name, getFun)</td>
+				<td>
+					<ol>
+						<li>快捷创建一个服务。</li>
+					</ol>
+					
+				</td>
+				<td>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>参数名</th>
+								<th>数据类型</th>
+								<th>解释</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>name</td>
+								<td>string</td>
+								<td>服务名称</td>
+							</tr>
+							<tr>
+								<td>getFun</td>
+								<td>function</td>
+								<td>这个函数会在AngularJS创建服务实例时被调用,并且只会在第一次实例化的时候调用一次；</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td>
+					<ul>
+						<li>getFun函数可以返回简单类型、函数乃至对象等任意类型的数据（同value()函数类似）。</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>4</td>
+				<td>service(name, constructor)</td>
+				<td>
+					<ol>
+						<li>可以注册一个支持构造函数的服务。</li>
+					</ol>
+					
+				</td>
+				<td>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>参数名</th>
+								<th>数据类型</th>
+								<th>解释</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>name</td>
+								<td>string</td>
+								<td>服务名称</td>
+							</tr>
+							<tr>
+								<td>constructor</td>
+								<td>function</td>
+								<td>
+									<ul class="hl-list">
+										<li>构造函数，我们调用它来实例化服务对象。 </li>
+										<li>service()函数会在创建实例时通过new关键字来实例化服务对象。 </li>
+									<ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td>
+					<ul>
+						<li>如果第二个参数是一个函数，那么这个服务就是一个函数；</li>
+						<li>该方式创建的服务，在使用config进行配置的时候，不需要在服务名称后加 Provider 进行配置,并且他是直接配置服务中的属性；</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td>5</td>
+				<td>provider(name, getFun)</td>
+				<td>
+					<ol>
+						<li>所有服务工厂都是由$provide服务创建的， $provide服务负责在运行时初始化这些提供者。</li>
+						<li>提供者是一个具有$get()方法的对象， $injector通过调用$get方法创建服务实例。<span class="text-danger">（用这个方法创建服务，必须返回一个定义有$get()函数的对象，否则会导致错误 ）</span></li>
+						<li>所有创建服务的方法都构建在provider方法之上。 provider()方法负责在$providerCache中注册服务。</li>
+					</ol>
+					
+				</td>
+				<td>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>参数名</th>
+								<th>数据类型</th>
+								<th>解释</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>name</td>
+								<td>string</td>
+								<td>服务名称</td>
+							</tr>
+							<tr>
+								<td>getFun</td>
+								<td>Function/object</td>
+								<td>
+									<ul class="hl-list">
+										<li>构造函数，我们调用它来实例化服务对象。</li>
+										<li>service()函数会在创建实例时通过new关键字来实例化服务对象。 </li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td>
+					<ul>
+						<li>该方式创建的服务在使用config进行配置的时候，需要在服务的名称后加 Provider，但是不能直接配置$get方法里面的字段，只能配置同$get同级且是this上挂载的属性（方法也是可以修改的）；</li>
+					</ul>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<ul class="hl-list">
+	<li class="text-danger">value()方法和constant()方法之间最主要的区别是， 常量可以注入到配置函数中，而值不行。</li>
+	<li class="text-danger">通常情况下，可以通过value()来注册服务对象或函数，用constant()来配置数据。</li>
+</ul>
+
+<h2 class="page-header">5.config，run 配置服务</h2>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead class="bg-primary">
+			<tr>
+				<th class="text-center">服务/阶段</th>
+				<th class="text-center">provider</th>
+				<th class="text-center">factory</th>
+				<th class="text-center">service</th>
+				<th class="text-center">value</th>
+				<th class="text-center">constant</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="text-center">
+				<td>config 阶段</td>
+				<td>Yes</td>
+				<td>No</td>
+				<td>No</td>
+				<td>No</td>
+				<td>Yes</td>
+			</tr>
+			<tr class="text-center">
+				<td>run 阶段</td>
+				<td>Yes</td>
+				<td>Yes</td>
+				<td>Yes</td>
+				<td>Yes</td>
+				<td>Yes</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<p>config  在配置服务的时候，需要给服务名称后面添加 Provider 后缀；</p>
+<p><b class="text-info">例如：</b>服务的名称是 myService,那么config配置该服务的时候就是 app.config()</p>
+
+<h2 class="page-header">6.装饰器 decorator</h2>
+<ul class="hl-list">
+	<li>装饰器不仅可以应用在我们自己的服务上，也可以对AngularJS的核心服务进行拦截、中断甚至替换功能的操作;</li>
+	<li><code>decorator(name, decoratorFn )</code>函数可以接受两个参数。</li>
+</ul>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead class="bg-primary">
+			<tr>
+				<th class="text-center">参数名称</th>
+				<th class="text-center">解释</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="text-center">name（字符串）</td>
+				<td>将要拦截的服务名称。</td>
+			</tr>
+			<tr>
+				<td class="text-center">decoratorFn（函数）</td>
+				<td>在服务实例化时调用该函数，这个函数由injector.invoke调用，可以将服务注入这个函数中。</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<ul class="hl-list text-danger">
+	<li>在 config 里面使用装饰器。</li>
+	<li>$delegate 是可以进行装饰的最原始的服务（$delegate 指代的就是最原始的服务实例），为了扩展原始服务，需要将其注入进装饰器。</li>
+	<li>需要注意的是 constant 常量是不可以被装饰的。</li>
+	<li>$delegate装饰运行的时间在config配置之后，实例化该服务之前。</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

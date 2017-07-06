@@ -1,0 +1,121 @@
+<h2 class="page-header">1.一共有四种拦截器，两种成功拦截器，两种失败拦截器。</h2>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead class="bg-primary">
+			<tr>
+				<th class="col-xs-1"></th>
+				<th class="text-center">成功拦截</th>
+				<th class="text-center">失败拦截</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="text-center bg-primary">请求</td>
+				<td>
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td>request </td>
+								<td>AngularJS通过$http设置对象来对请求拦截器进行调用。它可以对设置对象进行修改，或者创建一个新的设置对象，它需要返回一个更新过的设置对象，或者一个可以返回新的设置对象的promise。 </td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td>
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td>requestError </td>
+								<td>AngularJS会在上一个请求拦截器抛出错误，或者promise被reject时调用此拦截器。</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-center bg-primary">响应</td>
+				<td>
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td>response </td>
+								<td>AngularJS通过$http设置对象来对响应拦截器进行调用。它可以对响应进行修改，或者创建一个新的响应，它需要返回一个更新过的响应，或者一个可以返回新响应的promise。 </td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td>
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td>responseError </td>
+								<td>AngularJS会在上一个响应拦截器抛出错误，或者promise被reject时调用此拦截器。 </td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<h2 class="page-header">2.拦截器的作用</h2>
+<p>为请求添加全局功能，例如身份验证、错误处理等，在请求发送给服务器之前或者从服务器返回时对其进行拦截；</p>
+
+<h2 class="page-header">3.原理</h2>
+<p>拦截器的核心是服务工厂，通过向 $httpProvider.interceptors 数组中添加服务工厂，在$httpProvider中进行注册。</p>
+
+<h2 class="page-header">4.作用对象</h2>
+<p>针对的是 $http 服务</p>
+
+<h2 class="page-header">5.代码示例</h2>
+<pre>
+ app.factory('myInterceptor', function($q) {
+	var interceptor = {
+		request: function(config) {
+			// 成功的请求方法
+			console.log("拦截成功的请求😀");
+			return config; // 或者 $q.when(config);
+		},
+		response: function(response) {
+			// 响应成功
+			console.log("拦截成功的响应😁");
+			return response; // 或者 $q.when(config);
+		},
+		requestError: function(rejection) {
+			// 请求发生了错误，如果能从错误中恢复，可以返回一个新的请求或promise
+			console.log("拦截失败的请求😥");
+			return response; // 或新的promise
+			// 或者，可以通过返回一个rejection来阻止下一步
+			// return $q.reject(rejection);
+		},
+		responseError: function(rejection) {
+			// 请求发生了错误，如果能从错误中恢复，可以返回一个新的响应或promise
+			console.log("拦截失败的响应😰");
+			return rejection; // 或新的promise
+			// 或者，可以通过返回一个rejection来阻止下一步
+			// return $q.reject(rejection);
+		}
+	};
+	return interceptor;
+});
+
+app.config(function($httpProvider) {
+	$httpProvider.interceptors.push('myInterceptor');
+});
+
+app.controller("interceptorsController",["$scope","$http",function($scope,$http){
+	
+	var promise = $http({
+		method: "GET",
+		url: "https://api.github.com/users/octocat"
+	});
+	
+	promise.success(function(data){
+		console.log(data);
+	}).error(function(data,status){
+		console.log("状态码："+status);
+	});
+	
+}]);
+</pre>

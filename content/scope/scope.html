@@ -1,0 +1,176 @@
+<h2 class="page-header">1.作用域($scope)</h2>
+<h4>作用域有以下的基本功能：</h4>
+<ul>
+	<li>
+		<span>提供观察者以监视数据模型的变化:</span><br>
+		<span class="hl-indent">$scope提供$watch方法监视Model的变化;</span>
+	</li>
+	<li>
+		<span>可以将数据模型的变化通知给整个应用，甚至是系统外的组件:</span><br>
+		<span class="hl-indent">$scope提供$watch方法监视Model的变化;</span>
+	</li>
+	<li>
+		<span>可以进行嵌套，隔离业务功能和数据:</span><br>
+		<span class="hl-indent">$scope可以继承，用来隔离不同的application components和属性访问权限。</span>
+	</li>
+	<li>
+		<span>给表达式提供运算时所需的执行环境:</span><br>
+		<span class="hl-indent">$scope为Expressions的计算提供上下文;</span>
+	</li>
+	
+</ul>
+<p class="text-danger">开发AngularJS应用的大部分工作内容，就是构建作用域及其相关的功能。</p>
+<div class="text-center content-bottom" style="margin-bottom: 10px;">
+	<img src="http://localhost:2017/router/img/scope.jpg" class="img-thumbnail img-responsive">
+</div>
+<p class="text-danger">原则：将应用的业务逻辑都放在控制器中，而将相关的数据都放在控制器的作用域中；</p>
+<h4>根作用域</h4>
+<ul>
+	<li>AngularJS启动并生成视图时，会将根ng-app元素同$rootScope进行绑定。 $rootScope是所有$scope对象的最上层。</li>
+	<li>$rootScope是AngularJS中最接近全局作用域的对象。在$rootScope上附加太多业务逻并不是好主意，这与污染JavaScript的全局作用域是一样的。 </li>
+</ul>
+<h4><s>清理当前作用域：</s></h4>
+<ul>
+	<li><s>使用当前$scope上的$destory()的方法来清理当前作用域。</s></li>
+</ul>
+
+<h2 class="page-header hl-breakWord">2.$watch</h2>
+<p><span class="text-info">阅读：</span><a href="http://yuankeqiang.lofter.com/post/8de51_1454f93">Angular.js中使用$watch监听模型变化</a></p>
+<p><code>$watch(watchPropertyName, listener, objectEquality)</code></p>
+<p>参数说明：</p>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead class="bg-primary">
+			<tr>
+				<th class="col-xs-2 text-center">参数</th>
+				<th class="col-xs-10 text-center">解释</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="text-center">watchExpression</td>
+				<td>监听的属性名称，它可以是一个angular表达式如"propertyName"，或一个返回属性的函</td>
+			</tr>
+			<tr>
+				<td class="text-center">listener</td>
+				<td>当watchExpression变化时会被调用的函数或者表达式,它接收3个参数：newValue(新值), oldValue(旧值), scope(作用域的引用)；</td>
+			</tr>
+			<tr>
+				<td class="text-center">objectEquality</td>
+				<td>是否深度监听，如果设置为true,它告诉Angular检查所监控的对象中每一个属性的变化. 如果你希望监控数组的个别元素或者对象的属性而不是一个普通的值, 那么你应该使用它，对引用类型的值比较有用；</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div>
+	<span class="text-danger">$watch性能：</span>
+	<ul>
+		<li>太多的$watch将会导致性能问题，$watch如果不再使用，我们最好将其释放掉；</li>
+		<li>$watch函数返回一个注销监听的函数，如果我们想监控一个属性，然后在稍后注销它；</li>
+	</ul>
+	<pre>
+var watch = $scope.$watch('someModel.someProperty', callback);
+	//...
+watch();
+	</pre>
+</div>
+
+<h2 class="page-header">3.$apply</h2>
+<p>
+	<span class="text-info">阅读：</span><br>
+	<a href="http://www.cnblogs.com/leepyng/p/5781157.html">angularJs中 $apply() 的使用</a><br>
+	<a href="http://www.cnblogs.com/penghongwei/p/3398361.html">angularJS之 $apply() 方法</a>
+</p>
+<p>AngularJS一大亮点就是双向数据绑定(Two-way Data Binding)，这个亮点大大简化了我们的代码编写方式。</p>
+<p><span class="text-danger">双向数据绑定：</span>双向数据绑定就是当View中任何数据发生变化，会自动地反馈到作用域scope上（自动地更新scope上的数据）。当scope模型发生变化时，view中的数据也会更新到更新。<p>
+<p><span class="text-danger">实现机制：</span>当我们写下表达式如<span> {{</span> aModel <span>}} </span>时，Angular在幕后会为你在scope模型上设置一个watcher（观察者），它用来在数据发生变化的时候更新view。这里的watcher其实和你在AngularJS中自己设置的watcher是一样的：</p>
+<pre>
+$scope.$watch('aModel', function(newValue, oldValue) {  
+  //update the DOM with newValue  
+}); 
+</pre>
+<p>
+$watch()中的第二个参数是一个回调函数，该函数在aModel的值发生变化的时候会被调用。当aModel发生变化的时候，这个回调函数会被调用来更新view。
+</p>
+<div>
+	<strong class="text-danger">疑问：</strong><br>
+	<b>AngularJS是如何知道什么时候要调用这个回调函数呢？</b>
+	<ul>
+		
+		<li>在$digest循环中，watchers会被触发。当一个watcher被触发时，AngularJS会检测scope模型，如何它发生了变化那么关联到该watcher的回调函数就会被调用。</li>
+	</ul>
+	<b>$digest循环是在什么时候以各种方式开始的？</b>
+	<ul>
+		<li>在调用了$scope.$digest()后，$digest循环就开始了。假设你在一个ng-click指令对应的handler函数中更改了scope中的一条数据，此时AngularJS会自动地通过调用$digest()来触发一轮$digest循环。当$digest循环开始后，它会触发每个watcher。这些watchers会检查scope中的当前model值是否和上一次计算得到的model值不同。如果不同，那么对应的回调函数会被执行。调用该函数的结果，就是view中的表达式内容(译注：诸如{{ aModel }})会被更新。除了ng-click指令，还有一些其它的built-in指令以及服务来让你更改models(比如ng-model，$timeout等)和自动触发一次$digest循环。</li>
+		<li>AngularJS并不直接调用$digest()，而是调用$scope.$apply()，后者会调用$rootScope.$digest()。因此，一轮$digest循环在$rootScope开始，随后会访问到所有的children scope中的watchers。<br>
+			<span class="text-danger">解释：</span><span class="text-primary">angular先调用$scope.$apply()然后在该方法体内启动 $digest()循环，然后再运行各级作用域上的$watch();<span></li>
+		<li>假设你将ng-click指令关联到了一个button上，并传入了一个function名到ng-click上。当该button被点击时，AngularJS会将此function包装到一个wrapping function(包装函数)中，然后传入到$scope.$apply()。因此，你的function会正常被执行，修改models(如果需要的话)，此时一轮$digest循环也会被触发，用来确保view也会被更新。</li>
+	</ul>
+</div>
+<pre>
+<code>html:</code>
+	&lt;button ng-click="btnClick()"&gt;按钮&lt;/button&gt;
+<code>js:</code>
+	$scope.btnClick = function(){  /*逻辑处理*/  };
+	=> function wrapping (){  $scope.btnClick(); }
+	=> $scope.$apply(wrapping);
+</pre>
+<p>$scope.$apply()会自动地调用$rootScope.$digest()。</p>
+<b>$apply()方法有两种用法：</b>
+<ul>
+	<li>第一种会接受一个function作为参数，执行该function并且触发一轮$digest循环。</li>
+	<li>第二种会不接受任何参数，只是触发一轮$digest循环。我们马上会看到为什么第一种形式更好。</li>
+</ul>
+<p><span class="text-info">参考：</span><a href="http://blog.csdn.net/dm_vincent/article/details/38705099">理解Angular中的$apply()以及$digest()</a></p>
+<b>什么时候手动调用$apply()方法？</b>
+<ul>
+	<li>AngularJS对此有着非常明确的要求，就是它只负责对发生于AngularJS上下文环境中的变更会做出自动地响应(即，在$apply()方法中发生的对于models的更改)。</li>
+	<li>AngularJS上下文之外的任何地方修改了model，那么你就需要通过手动调用$apply()来通知AngularJS。这就像告诉AngularJS，你修改了一些models，希望AngularJS帮你触发watchers来做出正确的响应。</li>
+</ul>
+<b>解释为什么使用js原生的定时器我们修改$scope上的数据并不能在视图中得到更新的问题？</b>
+<ul>
+	<li>因为setTimeout和setInterval这两个定时的第一个参数都是回调函数，这两个回调函数比较特别，因为他们的运行环境并不是这两个函数定义的地方，而是在全局执行环境中运行；这就导致了我们在这两个回调函数修改$scope上的值的并不是在AngularJS上下文环境中的变更，这就导致了不能使AngularJS自动的响应；</li>
+</ul>
+<b class="text-info">对于这种情况有三种解决办法：</b>
+<ul>
+	<li>把修改的$scope上的值的操作放在一个函数中，再把这个函数放在$scope.$apply()中，再把$scope.$apply()放在两个定时器的回调函数中；</li>
+	<li>把修改的$scope上的值的操作放在$scope.$apply()上面，这里不向$apply()传递任何参数，再把前面这两段代码放在两个定时器的回调函数中，这是因为当$apply()运行后它内部会自动触发新一轮$digest循环，随之则运行各级作用域上的$watch()，对应的值就得到了更新；</li>
+	<li>Angular官方不建议使用js原生的两个定时，而是建议使用对应的两个angular提供的定时器服务$timeout和$interval;</li>
+</ul>
+
+<h2 class="page-header">4.$digest()</h2>
+<p>$digest它会周期性的运行，用来检查$scope模型中的数据是否发生了变化;</p>
+<div>
+	<b>$digest循环会运行多少次？</b>
+	<p><span class="text-info">答：</span>$digest循环最少也会运行两次，即使在listener函数中并没有改变任何model。它会多运行一次来确保models没有变化。</p>
+	<b class="text-info">解释：</b>
+	<ul>
+		<li>当一个$digest循环运行时，watchers会被执行来检查scope中的models是否发生了变化。如果发生了变化，那么相应的listener函数就会被执行。这涉及到一个重要的问题。如果listener函数本身会修改一个scope model呢？AngularJS会怎么处理这种情况？</li>
+		<li>答案是$digest循环不会只运行一次。在当前的一次循环结束后，它会再执行一次循环用来检查是否有models发生了变化。这就是脏检查(Dirty Checking)，它用来处理在listener函数被执行时可能引起的model变化。因此，$digest循环会持续运行直到model不再发生变化，或者$digest循环的次数达到了10次。因此，尽可能地不要在listener函数中修改model。</li>
+	</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

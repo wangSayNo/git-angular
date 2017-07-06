@@ -1,0 +1,81 @@
+.main-header {
+	padding-top: 62px;
+    padding-bottom: 62px;
+    background-repeat: no-repeat;
+    background-position: center 20%;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+.main-header h1{
+	color: #fff;
+	text-align: center;
+ }
+.main-navigation {
+	text-align: center;
+    background: #fff;
+    border-top: 1px solid #ebebeb;
+    margin-bottom: 35px;
+    border-bottom: 2px solid #e1e1e1;
+} 
+.main-navigation .menu {
+	padding: 0;
+    margin: 0;
+}
+.hide {
+	display: none!important;
+ }
+.banner-bg{
+    background-image:url('../img/banner5.jpg');
+    filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+    -moz-background-size:100% 100%;
+    background-size:100% 100%;
+}
+..highlight {
+    padding: 9px 14px;
+    margin-bottom: 14px;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+}
+.page-header {
+    padding-bottom: 9px;
+    margin: 20px 0 20px;
+    border-bottom: 1px solid #eee;
+}
+.hl-content {
+	padding-bottom: 50px;
+	margin-bottom: 20px;
+	border: 1px solid #eee;
+	border-radius: 5px;
+}
+.hl-indent {
+	padding-left: 28px;
+}
+.hl-breakWord {
+	word-wrap:break-word;
+}
+.hl-list {
+	list-style: none;
+	padding-left: 0;
+}
+
+accountReceivableCode:"87baac1a-1c52-fdd5-3988-68d35c9f13a8"
+code:"63d1e7a0-c659-4862-b210-36a63565c58a"
+contractChangeFormCode:"46d59ff9-782f-8118-4980-9ad5110e2a5b"
+costCatorgeryCode:"33753834-4781-4231-9E84-A909150B19F9"
+costCatorgeryName:"分期房款"
+isChecked:false
+isNew:false
+isReceivable:false
+isShowCheck:false
+paymentPercentage:20
+receivableAmount:400000
+receivableAmountUnTax:360360.3604
+receivableDate:"2016-12-07T00:00:00+08:00"
+receivableTax:39639.6396
+receivedAmount:0
+receivedAmountUnTax:0
+receivedDate:null
+receivedTax:0
+taxRate:0
+

@@ -1,0 +1,20 @@
+<h2 class="page-header">1.$q</h2>
+<p>$q服务是AngularJS自己封的一种promise实现;</p>
+<p>$q是Angular的一种内置服务，它可以使你异步地执行函数，并且当函数执行完成时它允许你使用函数的返回值（或异常）。</p>
+<b>$q常用的几个方法：</b>
+<ul>
+	<li>defer() 创建一个deferred对象，这个对象可以执行几个常用的方法，比如resolve(成功),reject(异常),notify(终态)等</li>
+	<li>all() 传入Promise的数组，批量执行，返回一个promise对象</li>
+	<li>when() 传入一个不确定的参数，如果符合Promise标准，就返回一个promise对象。</li>
+</ul>
+<p class="text-danger">调用 notify 不会在执行 finally 中的方法；</p>
+<p><b class="text-danger">在Promise中，定义了三种状态：等待状态，完成状态，拒绝状态。</b></p>
+<b class="text-danger">关于状态有几个规定：</b>
+<ol>
+	<li>状态的变更是不可逆的</li>
+	<li>等待状态可以变成完成或者拒绝</li>
+</ol>
+
+
+
+

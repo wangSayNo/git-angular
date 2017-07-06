@@ -1,0 +1,67 @@
+<h2 class="page-header">1.定义</h2>
+<p>可以理解成在特定DOM元素上运行的函数，指令可以扩展这个元素的功能；</p>
+
+<h2 class="page-header">2.定义指令的语法</h2>
+<pre>
+angular.module('myApp', [])
+.directive('myDirective', function ($timeout, UserDefinedService) {
+	// 指令定义放在这里
+	return {
+		restrict: String, //以何种方式使用指令 默认是A,E(元素方式)，C(类名方式), M(注释方式), A(属性方式<默认值>)
+		priority: Number, //优先级(数值类型)，默认值0 ，控制指令调用次序
+		terminal: Boolean, //为true或false, 这个参数用来告诉AngularJS停止运行当前元素上比本指令优先级低的指令 
+		template: String or Template Function, //一段HTML文本 或者 一个可以接受两个参数的函数，参数为tElement和tAttrs，并返回一个代表模板的字符串。 tElement和tAttrs中的t代表template，是相对于instance的。 
+		templateUrl: String, //一个代表外部HTML文件路径的字符串 或者 一个可以接受两个参数的函数function(tElement, tAttrs) (...}，参数为tElement和tAttrs，并返回一个外部HTML文件路径的字符串。
+		replace: Boolean or String, //如果设置了这个参数，值必须为true，因为默认值为false。 是否替换掉当前的调用该指令的元素；
+		scope: Boolean or Object, //scope参数是可选的，可以被设置为true或一个对象。默认值是false。 当scope设置为true时，会从父作用域继承并创建一个新的作用域对象。
+							//内置指令ng-controller的作用，就是从父级作用域继承并创建一个新的子作用域。它会创建一个新的从父作用域继承而来的子作用域。 
+		transclude: Boolean, //如果设置了，其值必须为true，它的默认值是false。作用是把嵌入在调用该指令的元素中的html包裹到该指令模板中制定的位置中；
+		controller: String or function($scope, $element, $attrs, $transclude, $otherInjectables) { ... }, // controller参数可以是一个字符串或一个函数。当设置为字符串时，会以字符串的值为名字，来查找注册在应用中的控制器的构造函数 
+		controllerAs: String, //controllerAs参数用来设置控制器的别名，可以以此为名来发布控制器，并且作用域可以访问controllerAs。 
+		require: String, //require参数可以被设置为字符串或数组，字符串代表另外一个指令的名字。制器注入到其值所指定的指令中，并作为当前指令的链接函数的第四个参数。 
+		link: function(scope, iElement, iAttrs) { ... },  //链接
+		compile: function(tElement, tAttrs, transclude ) { //编译
+			return {
+				pre: function(scope, iElement, iAttrs, controller){ ...},post: function(scope, iElement, iAttrs, controller) { ... }
+			}; 
+			//或者
+			return function postLink(...){ ... };
+		}
+		
+	}；
+}); 
+</pre>
+
+<h2 class="page-header">3.绑定策略</h2>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead class="bg-primary">
+			<tr>
+				<th class="text-center">绑定符号</th>
+				<th class="text-center">绑定方式</th>
+				<th class="text-center">解释</th>
+				<th class="text-center">传递方式</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="text-center">
+				<td>@</td>
+				<td>单项绑定</td>
+				<td>传递的值必须是字符串且在指令里引用时必须加上 <span>{{</span> }}</td>
+				<td>"<span>{{</span> value }}"</td>
+			</tr>
+			<tr class="text-center">
+				<td>=</td>
+				<td>双向绑定</td>
+				<td>双向绑定子域和父域(如果传递引用类型的值，使用这个)</td>
+				<td> "value"</td>
+			</tr>
+			<tr class="text-center">
+				<td>&</td>
+				<td>父作用域绑定</td>
+				<td>单向绑定父域，以便在其中运行函数，（给指令绑定一个父作用于中的函数）</td>
+				<td>"func()"</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

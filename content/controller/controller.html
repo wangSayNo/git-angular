@@ -1,0 +1,138 @@
+<h2 class="page-header">1.作用</h2>
+<ul>
+	<li>AngularJS中的控制器是一个函数，用来向视图的作用域中添加额外的功能。</li>
+	<li>一般来给作用域对象设置初始状态，并添加自定义行为。</li>
+</ul>
+
+<h2 class="page-header">2.工作过程</h2>
+<ul>
+	<li>当我们在页面上创建一个新的控制器时， AngularJS会生成并传递一个新的$scope给这个控制器。</li>
+	<li>可以在这个控制器里初始化$scope。由于AngularJS会负责处理控制器的实例化过程，我们只需编写构造函数即可。</li>
+	<li class="text-danger">出于内存占用和性能的考虑，控制器只会在需要时被实例化，并且不再需要就会被销毁。这意味每次切换路由或重新加载视图时，当前的控制器会被AngularJS清除掉；</li>
+</ul>
+<h2 class="page-header">3.控制器作用范围</h2>
+<p>拥有ng-controller='nameController'这个属性的元素内部的任何子元素中，都可以访问person对象， 因为它是定义在$scope上的。</p>
+
+<h2 class="page-header">4.控制器的嵌套</h2>
+<p>控制器的嵌套，在页面中体现出来的就是作用域的嵌套；</p>
+<p>除了独立作用域外，所有的作用域都通过原型继承而来，也就是说它们都可以访问父级作用域。</p>
+<b>一个控制器嵌套另一个控制器的写法：</b>
+<pre>
+<code>html:</code>
+&lt;div ng-controller="parentController"&gt;
+	&lt;h1&gt;我是：<span>{{</span> name }}&lt;/h1&gt;
+	&lt;div ng-controller="childController"&gt;
+		&lt;h2&gt;我是：{{name }}&lt;/h2&gt;
+		&lt;button ng-click="say()"&gt;来自父亲的问候&lt;/button&gt;
+	&lt;/div&gt;
+&lt;/div&gt;
+
+<code>js:</code>
+var app =  angular.module('myApp', []);
+app.controller('parentController', function($scope) {
+    $scope.name = "父亲 👨";
+    $scope.say= function() {
+        alert("好孩子！");
+    }
+});
+app.controller('childController', function($scope) {
+    $scope.name= "儿子 👦";
+});
+</pre>
+
+<h2 class="page-header">5.创建控制器及使用</h2>
+<pre>
+<code>html:</code>
+&lt;div ng-controller="bookController"&gt;
+	书名: &lt;input type="text" ng-model="firstName"&gt;&lt;br&gt;
+	作者: &lt;input type="text" ng-model="lastName"&gt;&lt;br&gt;
+	&lt;p>注释：&lt;span&gt;{{ annotation() <span>}}</span>&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+  
+<code>js:</code>
+var app = angular.module('myApp', []);
+app.controller('bookController', function($scope) {
+    $scope.bookName = "白鹿原";
+    $scope.author= "陈忠实";
+    $scope.annotation= function() {
+        return "《"+$scope.bookName + "》 的作者是 " + $scope.author;
+    }
+});
+</pre>
+ 
+<h2 class="page-header">6.编码规范</h2>
+<p>将控制器命名为[Name]Controller而不是[Name]Ctrl是一个最佳实践。</p>
+
+<h2 class="page-header">7.重点<span class="text-danger">（强调部分）</span></h2>
+<ul>
+	<li>AngularJS同其他JavaScript框架最主要的一个区别就是，控制器并不适合用来执行DOM操作、格式化或数据操作，以及除存储数据模型之外的状态维护操作。它只是视图和$scope之间的桥梁。</li>
+	<li>也就是能在控制器里面进行ＤＯＭ操作，但是这种做法是强烈不推荐，做好不要再控制器里面进行DOM操作，至于在哪里进行DOM操作合适，那就是指令里面，再具体点就是指令的link(链接函数)阶段，在这里进行DOM操作是比较安全合理地；</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

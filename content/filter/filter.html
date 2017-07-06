@@ -1,0 +1,114 @@
+<h2 class="page-header">1.定义</h2>
+<ul>
+	<li>过滤器用来格式化数据以更加友好的方式展示给用户。</li>
+	<li>过滤器可细分两类，一种是Angular内置的过滤器，一种是用户自定义的过滤器；</li>
+</ul>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<caption class="text-center tent-info"><b>Angular内置过滤器</b></caption>
+		<thead class="bg-primary">
+			<tr>
+				<th class="text-center">#</th>
+				<th class="text-center">过滤器</th>
+				<th class="text-center">可否传参</th>
+				<th class="text-center">描述</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="text-center">1</td>
+				<td class="text-center">currency</td>
+				<td class="text-center">Yes</td>
+				<td>格式化数字为货币格式。其实就是向数字钱添加一个字符串；</td>
+			</tr>
+			<tr>
+				<td class="text-center">2</td>
+				<td class="text-center">date</td>
+				<td class="text-center">Yes</td>
+				<td>将日期格式化成需要的格式 。</td>
+			</tr>
+			<tr>
+				<td class="text-center">3</td>
+				<td class="text-center">filter</td>
+				<td class="text-center">Yes</td>
+				<td>从数组项中选择一个子集。</td>
+			</tr>
+			<tr>
+				<td class="text-center">4</td>
+				<td class="text-center">json</td>
+				<td class="text-center">No</td>
+				<td>将一个JSON或JavaScript对象转换成字符串。这种转换对调试非常有帮助。</td>
+			</tr>
+			<tr>
+				<td class="text-center">5</td>
+				<td class="text-center">limitTo</td>
+				<td class="text-center">Yes</td>
+				<td>
+					<ul class="hl-list">
+						<li>根据传入的参数生成一个新的数组或字符串。</li>
+						<li>新的数组或字符串的长度取决于传入的参数。</li>
+						<li>通过传入参数的正负值来控制从前面还是从后面开始截取。</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="text-center">6</td>
+				<td class="text-center">number</td>
+				<td class="text-center">Yes</td>
+				<td>number过滤器将数字格式化成文本。它的第二个参数是可选的，用来控制小数点后截取的位数。如果传入了一个非数字字符，会返会空字符串。</td>
+			</tr>
+			<tr>
+				<td class="text-center">7</td>
+				<td class="text-center">orderBy</td>
+				<td class="text-center">Yes</td>
+				<td>根据某个表达式排列数组。</td>
+			</tr>
+			<tr>
+				<td class="text-center">8</td>
+				<td class="text-center">lowercase </td>
+				<td class="text-center">No</td>
+				<td>格式化字符串为小写。</td>
+			</tr>
+			<tr>
+				<td class="text-center">9</td>
+				<td class="text-center">uppercase</td>
+				<td class="text-center">No</td>
+				<td>格式化字符串为大写。</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<h2 class="page-header">2.内置过滤器的使用</h2>
+<p>使用管道符“|”后面添加过滤器的名字即可使用，给过滤的传递参数是在过滤器的后面加“:”(英文冒号)，如果传递多个参数请使用多个英文冒号隔开，然后在后面加引号，在引号里面写上参数；</p>
+<b class="text-info">示例：</b>
+<pre>
+&lt;p&gt;<span>{{</span> employees|orderBy:"salary"|json }}&lt;/p&gt;
+或
+ng-repeat="e in employees|filter:{'name':'!'+uname}|orderBy:'salary'"
+
+</pre>
+
+<h2 class="page-header">3.自定义过滤器</h2>
+<b class="text-info">本质：过滤器本质上是一个会把我们输入的内容当作参数传入进去的函数 ；</b>
+<b>步骤：</b>
+<ul>
+	<li>创建一个模块，取得模块对象；</li>
+	<li>在模块对象上调用 filter 方法，第一个参数是自定义过滤器的名字，第二个参数是一个函数，可以给该函数注入一些服务以便内部使用，最后该函数返回一个函数，并且返回的的这个函数也要有一个返回值；</li>
+</ul>
+<b>示例：</b>
+<pre>
+//删除非字母字符过滤器
+app.filter("removeNotLetter",function(){
+	return function(input){
+		if(input){
+			return input.replace(/[^a-z]/ig,'');
+		};
+	};
+});
+</pre>
+
+
+
+
+
