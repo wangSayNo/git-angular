@@ -1,5 +1,5 @@
 define(function(require){
-	//console.log('appRouter.js');
+	console.log('appRouter.js');
 	var app = require('app');
 	app.config(function($stateProvider,$urlRouterProvider){
 		var baseUrl = "./";
