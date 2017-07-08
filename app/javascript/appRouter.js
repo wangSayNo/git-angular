@@ -1,8 +1,8 @@
 define(function(require){
-	console.log('appRouter.js');
+	//console.log('appRouter.js');
 	var app = require('app');
 	app.config(function($stateProvider,$urlRouterProvider){
-		var baseUrl = "http://localhost:2017/router/";
+		var baseUrl = "./";
 		//如果没有路由引擎能匹配当前的导航状态，那它就会默认将路径路由至 default.html,它就像switch case语句中的default选项
 		$urlRouterProvider.when("","/home/presentation");
 		

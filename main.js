@@ -40,5 +40,5 @@ require(['angular','jquery','app','../app/javascript/appRouter'],function(angula
 		angular.bootstrap(document,["App"]);
 		angular.element(document).find('html').addClass('ng-app');
 	});
-	console.log("main.js");
+	//console.log("main.js");
 });
